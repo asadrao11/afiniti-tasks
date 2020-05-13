@@ -1,0 +1,21 @@
+- name: Uninstall old versions of docker and docker-compose on centos
+  yum:
+    name:
+       - docker-client
+       - docker-client-latest
+       - docker-common
+       - docker-latest
+       - docker-latest-logrotate
+       - docker-logrotate
+       - docker-engine
+    state: absent
+
+- name: Configuring Repository
+  yum:
+    name:
+       - yum-utils
+
+- name: Adding docker repository 
+  yum_repository:
+    name: docker
+    baseurl: https://download.docker.com/linux/centos/docker-ce.repo

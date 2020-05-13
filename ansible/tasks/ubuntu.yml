@@ -1,0 +1,10 @@
+- name: Installing a list of packages on ubuntu
+  apt:
+    name:
+       - apache2
+       - bzip2
+       - git
+       - wget
+       - openssl
+    state: present
+

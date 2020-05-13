@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - include: tasks/docker-centos.yml
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - include: tasks/docker-ubuntu.yml
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

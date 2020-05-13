@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  become: yes 
+
+  vars_prompt:
+    - name: "user_name"
+      prompt: "Enter Username"
+      private: no
+
+    - name: "new_password"
+      prompt: "Enter New Password"
+      private: no
+      encrypt: "md5_crypt"
+      confirm: yes
+      salt_size: 7
+
+  tasks:
+    - name: Adding User '{{user_name}}' as a sudo user with password '{{new_password}}'
+      become: yes
+      user: name={{user_name}} update_password=always password={{new_password}} shell=/bin/bash createhome=yes
+
+    - name: Allow 'sudo'  to have password sudo
+      lineinfile: dest=/etc/sudoers line='{{user_name}} ALL=(ALL:ALL) ALL' state=present

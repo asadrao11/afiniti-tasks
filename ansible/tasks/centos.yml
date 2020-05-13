@@ -1,0 +1,10 @@
+- name: Installing a list of packages on centos
+  yum:
+    name:
+       - httpd
+       - bzip2
+       - git
+       - wget
+       - openssl-devel
+    state: present
+
