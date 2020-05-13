@@ -14,8 +14,16 @@
   yum:
     name:
        - yum-utils
+    state: latest
 
 - name: Adding docker repository 
-  yum_repository:
-    name: docker
-    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    
+- name: Enable Docker CE Nightly Repo
+  ini_file:
+     dest: /etc/yum.repos.d/docker-ce.repo
+     section: 'docker-ce-nightly'
+     option: enabled
+     value: 0
