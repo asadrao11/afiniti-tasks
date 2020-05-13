@@ -1,0 +1,57 @@
+- name: Uninstall old versions of docker on ubuntu
+  apt:
+    name:
+       - docker
+       - docker.io
+       - containerd
+       - runc
+       - docker-engine
+    state: absent
+
+- name: Installing Some Required Packages
+  apt:
+    name:
+       - apt-transport-https
+       - ca-certificates
+       - curl
+       - gnupg-agent
+       - software-properties-common
+    
+- name: Adding Docker Official GPG Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Adding Docker Repository
+  apt_repository:
+    repo: 'deb [arhc=amd64] https://download.docker.com/linux/ubuntu stable'
+    state: present
+    filename: docker-ce
+    update_cache: yes
+
+- name: Installing Docker Engine
+  apt:
+    name:
+       - docker-ce
+       - docker-ce-cli
+       - containerd.io
+    state: present
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user devops to docker group
+  user:
+    name: devops
+    groups: docker
+    append: yes
+
+- name: Install docker-compose
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+
