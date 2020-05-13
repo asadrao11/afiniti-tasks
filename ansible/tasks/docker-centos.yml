@@ -26,4 +26,31 @@
      dest: /etc/yum.repos.d/docker-ce.repo
      section: 'docker-ce-nightly'
      option: enabled
-     value: 0
+     value: '0'
+
+- name: Installing Docker Engine
+  yum:
+    name:
+       - docker-ce
+       - docker-ce-cli
+       - containerd.io
+    state: present
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user devops to docker group
+  user:
+    name: devops
+    groups: docker
+    append: yes
+
+- name: Install docker-compose
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+
